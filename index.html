@@ -1,0 +1,289 @@
+<!-- Määrittää HTML-dokumentin tyypin selaimelle -->
+<!DOCTYPE html>
+<!-- Sivun kieli on suomi -->
+<html lang="fi">
+<head>
+    <!-- Merkkikoodaus, jotta ääkköset näkyvät oikein -->
+    <meta charset="UTF-8">
+    <!-- Skaalaus mobiililaitteille -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Sivun otsikko selaimen välilehdessä -->
+    <title>Stella Kryukov - Taideportfolio</title>
+    <!-- Päätyylitiedosto -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google-fontit typografiaa varten -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Etusivun pääosio / esittely -->
+    <section class="hero">
+        <!-- Sisältöruudukko -->
+        <div class="hero-content">
+            <!-- Taiteilijan kuvan kehys -->
+            <div class="artist-photo-container">
+                <!-- Varsinainen kuva -->
+                <div class="artist-photo">
+                    <!-- Taiteilijan valokuva -->
+                    <img src="images/me/me.jpeg" alt="Taiteilijan kuva">
+                </div>
+                <!-- Koristeellinen kehys -->
+                <div class="photo-frame"></div>
+            </div>
+            <!-- Tekstisisältö -->
+            <div class="artist-info">
+                <!-- Nimi -->
+                <h1 class="artist-name">Stella Kryukov</h1>
+                <!-- Ammattinimike -->
+                <p class="artist-title">Nykytaiteilija</p>
+                <!-- Koristeviiva -->
+                <div class="divider"></div>
+                <!-- Esittelyteksti 1 -->
+                <p class="artist-bio">
+                    Aloitin maalaamisen vuonna 2020 korona-ajan pysäyttämänä,
+                     mutta luovuus on ollut osa minua koko elämäni.
+                      Olen pienestä lähtien nauttinut maalaamisesta ja erilaisten visuaalisten ilmaisumuotojen tutkimisesta.
+                       Viimeisen vuoden aikana olen syventynyt erityisesti öljyvärimaalaukseen, 
+                       joka on avannut työskentelyyni uusia kerroksia ja mahdollisuuksia.                </p>
+                <!-- Esittelyteksti 2 -->
+                <p class="artist-bio">
+                    Maalaaminen inspiroi minua ennen kaikkea itseilmaisun välineenä – tapana muuttaa tunteet,
+                     kokemukset ja hetket visuaaliseksi kieleksi. Teokseni syntyvät usein intuitiivisesti, 
+                      antaen tilaa tunnetilalle ja liikkeelle, eikä valmiille vastauksille. Uskon, 
+                      että taide voi välittää jotain sanomatonta: herättää tunteen, 
+                      muiston tai yhteyden katsojan ja teoksen välille. 
+            	</p>
+                <!-- Esittelyteksti 3 -->
+                     <p class="artist-bio">Jokainen maalaus on oma matkansa, 
+                     jossa pyrin olemaan rehellinen sekä itselleni että katsojalle.</p>
+                <!-- Some- ja yhteyslinkit -->
+                <div class="social-links">
+                    <!-- Instagram-linkki -->
+                    <a href="https://www.instagram.com/kryukovstella" class="social-link">Instagram</a>
+                    <!-- Hyppylinkki yhteydenottoon -->
+                    <a href="#contact" class="social-link">Ota yhteyttä</a>
+                </div>
+            </div>
+        </div>
+        <!-- Kehote selata alas -->
+        <div class="scroll-indicator">
+            <!-- Teksti -->
+            <span>Selaa galleriaa</span>
+            <!-- Nuoli -->
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Galleriaosio -->
+    <section class="gallery-section">
+        <!-- Otsikko ja ohjeet -->
+        <div class="gallery-header">
+            <!-- Otsikko -->
+            <h2>Teokset</h2>
+            <!-- Ohjeteksti -->
+            <p>Käytä nuolia selataksesi kokoelmaa</p>
+            <!-- Gallerian päivityspainike -->
+            <button class="refresh-btn" id="refreshBtn" title="Päivitä galleria">
+                <!-- Ikoni -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <!-- Teksti -->
+                <span>Päivitä</span>
+            </button>
+        </div>
+        <!-- Gallerian kehys -->
+        <div class="gallery-container">
+            <!-- Edellinen-painike -->
+            <button class="gallery-nav-btn prev-btn" id="prevBtn" aria-label="Edellinen maalaus">
+                <!-- Nuoli-ikoni -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <!-- Seuraava-painike -->
+            <button class="gallery-nav-btn next-btn" id="nextBtn" aria-label="Seuraava maalaus">
+                <!-- Nuoli-ikoni -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            <!-- Korttien rata (täytetään JS:llä) -->
+            <div class="gallery-track" id="galleryTrack">
+            </div>
+        </div>
+        <p class="gallery-hint">Klikkaa maalausta nähdäksesi täyden koon ja mitat.</p>
+    </section>
+
+    <!-- Isomman kuvan modal -->
+    <div class="painting-modal" id="paintingModal">
+        <!-- Sulkunappi -->
+        <button class="modal-close" id="modalClose">
+            <!-- X-ikoni -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <!-- Modaalin sisältö -->
+        <div class="modal-content">
+            <!-- Kuva -->
+            <img id="modalImage" src="" alt="Maalaus">
+            <!-- Tekstit -->
+            <div class="modal-info">
+                <!-- Teoksen nimi -->
+                <h3 id="modalTitle"></h3>
+                <!-- Tekniikka -->
+                <p id="modalMedium"></p>
+                <!-- Hinta -->
+                <p id="modalPrice" class="modal-price"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yhteydenotto-osio -->
+    <section class="contact-section" id="contact">
+        <!-- Sisältökehys -->
+        <div class="contact-container">
+            <!-- Info vasemmalla -->
+            <div class="contact-info">
+                <!-- Otsikko -->
+                <h2>Tilaa maalaus</h2>
+                <!-- Johdantoteksti -->
+                <p class="contact-intro">
+                Jos olet kiinnostunut hankkimaan jonkin teoksistani tai tilaamaan yksilöllisen tilaustyön,
+                 kuulen sinusta mielelläni. Jokainen työ syntyy intohimolla ja huolellisuudella,
+                  ja teen mielelläni yhteistyötä keräilijöiden ja tilaajien kanssa,
+                   jotta lopputulos vastaa heidän toiveitaan ja näkemystään.
+               </p>
+                <!-- Yhteystiedot -->
+                <div class="contact-details">
+                    <!-- Sähköposti -->
+                    <div class="contact-item">
+                        <!-- Otsikko -->
+                        <span class="contact-label">Email</span>
+                        <!-- Arvo -->
+                        <span class="contact-value"><a href="https://www.instagram.com/kryukovstella" target="_blank" style="color: inherit; text-decoration: underline;">stellamaria.kryukov@gmail.com</a></span>
+                    </div>
+                    <!-- Vastausaika -->
+                    <div class="contact-item">
+                        <!-- Otsikko -->
+                        <span class="contact-label">Vastaus Aika</span>
+                        <!-- Arvo -->
+                        <span class="contact-value">24–48 tunnin kuluessa</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Lomake oikealla -->
+            <div class="contact-form-wrapper">
+                <!-- Yhteydenottolomake -->
+                <form class="contact-form" id="contactForm" action="https://formsubmit.co/stellamaria.kryukov@gmail.com" method="POST">
+                    <!-- Sähköpostin aiherivi -->
+                    <input type="hidden" name="_subject" value="New inquiry from Portfolio">
+                    <!-- Ulkoinen captcha pois käytöstä -->
+                    <input type="hidden" name="_captcha" value="false">
+                    <!-- Honeypot-bottihaavi -->
+                    <input type="text" name="_honey" style="display:none">
+                    
+                    <!-- Nimikenttä -->
+                    <div class="form-group">
+                        <!-- Kentän otsikko -->
+                        <label for="name">Nimesi</label>
+                        <!-- Syöttökenttä -->
+                        <input type="text" id="name" name="name" required placeholder="Kirjoita nimesi">
+                    </div>
+                    
+                    <!-- Sähköpostikenttä -->
+                    <div class="form-group">
+                        <!-- Kentän otsikko -->
+                        <label for="email">Sähköpostiosoite</label>
+                        <!-- Syöttökenttä -->
+                        <input type="email" id="email" name="email" required placeholder="Kirjoita sähköpostiosoitteesi">
+                    </div>
+                    
+                    <!-- Aihevalinta -->
+                    <div class="form-group">
+                        <!-- Kentän otsikko -->
+                        <label for="subject">Aihe</label>
+                        <!-- Pudotuslista -->
+                        <select id="subject" name="subject" required>
+                            <!-- Tyhjä oletus -->
+                            <option value="">Valitse vaihtoehto</option>
+                            <!-- Osto -->
+                            <option value="Purchase Inquiry">Osta maalaus</option>
+                            <!-- Tilaustyö -->
+                            <option value="Commission Request">Tilaa teos</option>
+                            <!-- Yleinen kysymys -->
+                            <option value="General Inquiry">Yleinen kysymys</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Mahdollinen teos -->
+                    <div class="form-group">
+                        <!-- Kentän otsikko -->
+                        <label for="painting">Kiinnostava maalaus (valinnainen)</label>
+                        <!-- Syöttökenttä -->
+                        <input type="text" id="painting" name="painting" placeholder="esim. Auringonlasku">
+                    </div>
+                    
+                    <!-- Viestikenttä -->
+                    <div class="form-group">
+                        <!-- Kentän otsikko -->
+                        <label for="message">Viestisi</label>
+                        <!-- Monirivinen kenttä -->
+                        <textarea id="message" name="message" rows="5" required placeholder="Kerro aiheestasi..."></textarea>
+                    </div>
+                    
+                    <!-- Captcha-ryhmä -->
+                    <div class="form-group captcha-group">
+                        <!-- Kentän otsikko -->
+                        <label for="captcha">Vahvista että olet ihminen</label>
+                        <!-- Kysymys + vastaus -->
+                        <div class="captcha-wrapper">
+                            <!-- Itse kysymys -->
+                            <span id="captchaQuestion" class="captcha-question"></span>
+                            <!-- Vastauskenttä -->
+                            <input type="number" id="captcha" name="captcha" required placeholder="Vastaus">
+                        </div>
+                    </div>
+                    
+                    <!-- Lähetyspainike -->
+                    <button type="submit" class="submit-btn">
+                        <!-- Painiketeksti -->
+                        <span>Lähetä viesti</span>
+                        <!-- Ikoni -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sivun alatunniste -->
+    <footer class="footer">
+        <!-- Alatunnisteen sisältö -->
+        <div class="footer-content">
+            <!-- Tekijänoikeus -->
+            <p class="copyright">&copy; 2026 Stella Kryukov. Kaikki oikeudet pidätetään.</p>
+            <!-- Tekijämerkintä -->
+            <p class="credits"><span class="rainbow-text">Made By CrykWorks</span> <span class="heart">❤️</span></p>
+            <!-- Linkit -->
+            <div class="footer-links">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/kryukovstella" target="_blank">Instagram</a>
+                <!-- Hyppylinkki yhteystietoihin -->
+                <a href="#contact">Yhteystiedot</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hintadata erillisestä tiedostosta -->
+    <script src="data.js"></script>
+    <!-- Sivun logiikka -->
+    <script src="script.js"></script>
+</body>
+</html>

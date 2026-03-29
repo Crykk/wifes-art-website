@@ -1,0 +1,1108 @@
+/* Yleinen nollaus: poistetaan oletusmarginaalit */
+* {
+    margin: 0; /* Ei ulkomarginaalia */
+    padding: 0; /* Ei sisämarginaalia */
+    box-sizing: border-box; /* Leveys sisältää reunat ja sisätilan */
+}
+
+/* Väriteema ja perusmuuttujat */
+:root {
+    --warm-cream: #faf6f0; /* Vaalea taustasävy */
+    --warm-beige: #f0e6d8; /* Beige sävy */
+    --warm-tan: #d4c4a8; /* Pehmeä ruskea */
+    --terracotta: #c67d5e; /* Terrakotta korostuksiin */
+    --deep-brown: #5c4033; /* Tumma ruskea */
+    --gold-accent: #b8956e; /* Kullan sävy */
+    --soft-shadow: rgba(92, 64, 51, 0.15); /* Pehmeä varjo */
+    --text-dark: #3d2914; /* Tumma tekstiväri */
+    --text-light: #8b7355; /* Vaalea tekstiväri */
+}
+
+/* HTML:n perusasetukset */
+html {
+    scroll-behavior: smooth; /* Pehmeä vieritys */
+    -webkit-text-size-adjust: 100%; /* Ei automaattista fontin venytystä iOS:ssä */
+}
+
+/* Koko sivun perusasetukset */
+body {
+    font-family: 'Lato', sans-serif; /* Perusfontti */
+    background: linear-gradient(135deg, var(--warm-cream) 0%, var(--warm-beige) 100%); /* Taustan liukuväri */
+    color: var(--text-dark); /* Tekstin väri */
+    overflow-x: hidden; /* Ei vaakavieritystä */
+    cursor: url('cursor.cur') 0 24, auto; /* Oma hiiren kursori */
+    min-height: 100dvh; /* Vähintään ruudun korkeus */
+    -webkit-font-smoothing: antialiased; /* Pehmeä fontin piirto */
+    -moz-osx-font-smoothing: grayscale; /* Pehmeä fontin piirto Macissä */
+}
+
+/* Klikattavat elementit käyttävät omaa kursoria */
+a, button, .painting-card, input, textarea, select {
+    cursor: url('cursor.cur') 0 24, pointer; /* Osoitinkursori */
+}
+
+/* Hero-osio */
+.hero {
+    min-height: 100vh; /* Täysi ruudun korkeus */
+    min-height: 100dvh; /* Uudempi korkeusmitta */
+    display: flex; /* Flex-asettelu */
+    flex-direction: column; /* Sisältö päällekkäin */
+    justify-content: center; /* Keskitys pystysuunnassa */
+    align-items: center; /* Keskitys vaakasuunnassa */
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem); /* Reunat responsiivisesti */
+    position: relative; /* Mahdollistaa absoluuttiset lapset */
+    background: 
+        radial-gradient(ellipse at 20% 80%, rgba(198, 125, 94, 0.15) 0%, transparent 50%), /* Taustakoriste 1 */
+        radial-gradient(ellipse at 80% 20%, rgba(184, 149, 110, 0.2) 0%, transparent 50%), /* Taustakoriste 2 */
+        linear-gradient(135deg, var(--warm-cream) 0%, var(--warm-beige) 100%); /* Pääliukuväri */
+}
+
+/* Hero-sisällön asettelu */
+.hero-content {
+    display: flex; /* Kuvan ja tekstin rinnakkain */
+    align-items: center; /* Keskitys pystyyn */
+    justify-content: center; /* Keskitys vaakaaan */
+    gap: clamp(2rem, 5vw, 5rem); /* Välit */
+    max-width: 1400px; /* Maksimileveys */
+    width: 100%; /* Täysi leveys */
+    padding: clamp(1rem, 3vw, 2rem); /* Sisätilaa */
+}
+
+/* Kuvakehyskontti */
+.artist-photo-container {
+    position: relative; /* Kehyksen asettelu */
+    flex-shrink: 0; /* Ei kutistu pieneksi */
+}
+
+/* Varsinainen kuva */
+.artist-photo {
+    width: clamp(250px, 30vw, 380px); /* Kuvaleveys */
+    height: clamp(330px, 40vw, 500px); /* Kuvakorkeus */
+    overflow: hidden; /* Piilotetaan ylitys */
+    border-radius: 8px; /* Pyöristetyt kulmat */
+    box-shadow: 
+        0 25px 50px -12px var(--soft-shadow), /* Päävarjo */
+        0 0 0 1px rgba(198, 125, 94, 0.1); /* Ohut reunus */
+    position: relative; /* Sisäelementtien ankkuri */
+    z-index: 2; /* Kuvan päälle */
+}
+
+/* Kuvan sisäinen kuva */
+.artist-photo img {
+    width: 100%; /* Täysi leveys */
+    height: 100%; /* Täysi korkeus */
+    object-fit: cover; /* Kuva täyttää ilman vääristymää */
+    transition: transform 0.5s ease; /* Pehmeä zoom */
+}
+
+/* Hover-zoom */
+.artist-photo:hover img {
+    transform: scale(1.03); /* Kevyt suurennus */
+}
+
+/* Koristekehys */
+.photo-frame {
+    position: absolute; /* Päällä oleva kehys */
+    top: 20px; /* Siirto alas */
+    left: 20px; /* Siirto oikealle */
+    width: 100%; /* Sama koko kuin kuva */
+    height: 100%; /* Sama koko kuin kuva */
+    border: 3px solid var(--gold-accent); /* Kehyksen väri */
+    border-radius: 8px; /* Pyöristetyt kulmat */
+    z-index: 1; /* Kuvan alle */
+    transition: transform 0.3s ease; /* Pehmeä liike */
+}
+
+/* Kehyksen hover-siirto */
+.artist-photo-container:hover .photo-frame {
+    transform: translate(10px, 10px); /* Liike alas ja oikealle */
+}
+
+/* Tekstiosion leveys */
+.artist-info {
+    max-width: 500px; /* Rajoitettu leveys */
+}
+
+/* Taiteilijan nimi */
+.artist-name {
+    font-family: 'Playfair Display', serif; /* Otsikkofontti */
+    font-size: clamp(2rem, 5vw, 3.5rem); /* Responsiivinen koko */
+    font-weight: 600; /* Puolilihava */
+    color: var(--text-dark); /* Tekstin väri */
+    margin-bottom: 0.5rem; /* Väli alle */
+    letter-spacing: -1px; /* Tiukempi kirjainväli */
+}
+
+/* Ammattinimike */
+.artist-title {
+    font-size: 1.2rem; /* Tekstin koko */
+    color: var(--terracotta); /* Korostusväri */
+    font-weight: 300; /* Kevyt fontti */
+    letter-spacing: 2px; /* Kirjainväli */
+    text-transform: uppercase; /* Isot kirjaimet */
+    margin-bottom: 1.5rem; /* Väli alle */
+}
+
+/* Koristeviiva */
+.divider {
+    width: 60px; /* Viivan pituus */
+    height: 2px; /* Viivan paksuus */
+    background: linear-gradient(90deg, var(--terracotta), var(--gold-accent)); /* Liukuväri */
+    margin-bottom: 2rem; /* Väli alle */
+}
+
+/* Esittelyteksti */
+.artist-bio {
+    font-size: 1.1rem; /* Tekstin koko */
+    line-height: 1.8; /* Riviväli */
+    color: var(--text-light); /* Pehmeä väri */
+    margin-bottom: 1.5rem; /* Väli alle */
+}
+
+/* Some-linkkien rivi */
+.social-links {
+    display: flex; /* Linkit vierekkäin */
+    gap: 1.5rem; /* Välit */
+    margin-top: 2rem; /* Väli ylös */
+    margin-bottom: 3rem; /* Väli alas */
+}
+
+/* Yksittäinen linkki */
+.social-link {
+    font-size: 0.95rem; /* Tekstin koko */
+    color: var(--text-dark); /* Tekstin väri */
+    text-decoration: none; /* Ei alleviivausta */
+    padding: 0.75rem 1.5rem; /* Painikkeen sisätila */
+    border: 1px solid var(--gold-accent); /* Reunus */
+    border-radius: 30px; /* Pyöreä muoto */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+    letter-spacing: 1px; /* Kirjainväli */
+}
+
+/* Linkin hover-tila */
+.social-link:hover {
+    background: var(--terracotta); /* Taustaväri */
+    border-color: var(--terracotta); /* Reunuksen väri */
+    color: white; /* Tekstin väri */
+}
+
+/* Alas vierityksen vihje */
+.scroll-indicator {
+    position: absolute; /* Paikallaan hero-osiossa */
+    bottom: 4rem; /* Etäisyys alareunasta */
+    display: flex; /* Teksti ja nuoli */
+    flex-direction: column; /* Päällekkäin */
+    align-items: center; /* Keskitys */
+    animation: bounce 2s infinite; /* Pomppiva animaatio */
+}
+
+/* Vihjeteksti */
+.scroll-indicator span {
+    font-size: 0.85rem; /* Pieni teksti */
+    color: var(--text-light); /* Pehmeä väri */
+    letter-spacing: 2px; /* Kirjainväli */
+    margin-bottom: 0.5rem; /* Väli nuoleen */
+}
+
+/* Nuolimerkki */
+.scroll-arrow {
+    width: 30px; /* Leveys */
+    height: 30px; /* Korkeus */
+    border-right: 2px solid var(--gold-accent); /* Oikea viiva */
+    border-bottom: 2px solid var(--gold-accent); /* Alaviiva */
+    transform: rotate(45deg); /* Käännetään nuoleksi */
+}
+
+/* Pomppuanimaatio */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0); /* Normaali sijainti */
+    }
+    40% {
+        transform: translateY(-10px); /* Hyppy ylös */
+    }
+    60% {
+        transform: translateY(-5px); /* Pieni hyppy */
+    }
+}
+
+/* Galleriaosio */
+.gallery-section {
+    min-height: 100vh; /* Koko ruudun korkeus */
+    padding: 4rem 0; /* Ylä- ja alareuna */
+    background: 
+        radial-gradient(ellipse at 50% 0%, rgba(198, 125, 94, 0.1) 0%, transparent 50%), /* Yläkoriste */
+        linear-gradient(180deg, var(--warm-beige) 0%, var(--warm-cream) 100%); /* Taustaliuku */
+}
+
+/* Gallerian otsikkoalue */
+.gallery-header {
+    text-align: center; /* Keskitys */
+    padding: 2rem; /* Sisätila */
+    margin-bottom: 2rem; /* Väli alas */
+    display: flex; /* Pystylista */
+    flex-direction: column; /* Pysty */
+    align-items: center; /* Keskitys */
+    gap: 0.5rem; /* Välit */
+}
+
+/* Gallerian otsikko */
+.gallery-header h2 {
+    font-family: 'Playfair Display', serif; /* Otsikkofontti */
+    font-size: 3rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+    margin-bottom: 0.5rem; /* Väli */
+}
+
+/* Gallerian ohjeteksti */
+.gallery-header p {
+    color: var(--text-light); /* Pehmeä väri */
+    font-size: 1rem; /* Koko */
+    letter-spacing: 1px; /* Kirjainväli */
+    margin-bottom: 1rem; /* Väli */
+}
+
+/* Päivityspainike */
+.refresh-btn {
+    display: flex; /* Ikoni ja teksti rinnakkain */
+    align-items: center; /* Keskitys pystyyn */
+    gap: 0.5rem; /* Välit */
+    padding: 0.6rem 1.2rem; /* Sisätila */
+    background: transparent; /* Ei taustaa */
+    border: 1px solid var(--gold-accent); /* Reunus */
+    border-radius: 25px; /* Pyöristetty */
+    color: var(--gold-accent); /* Tekstin väri */
+    font-family: 'Lato', sans-serif; /* Fontti */
+    font-size: 0.9rem; /* Koko */
+    cursor: pointer; /* Osoitinkursori */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+}
+
+/* Päivityspainikkeen hover */
+.refresh-btn:hover {
+    background: var(--terracotta); /* Tausta */
+    border-color: var(--terracotta); /* Reunus */
+    color: white; /* Teksti */
+}
+
+/* Ikonin pyöräytys hoverissa */
+.refresh-btn:hover svg {
+    transform: rotate(180deg); /* Pyörii */
+}
+
+/* Ikonin siirtymä */
+.refresh-btn svg {
+    transition: transform 0.5s ease; /* Pehmeä pyörähdys */
+}
+
+/* Gallerian container */
+.gallery-container {
+    width: 100%; /* Täysi leveys */
+    position: relative; /* Nuolipainikkeille */
+    padding: 3rem 0; /* Ylä- ja alareuna */
+    min-height: 550px; /* Minimikorkeus */
+    display: flex; /* Keskitys */
+    align-items: center; /* Keskitys pystyyn */
+    justify-content: center; /* Keskitys vaakaaan */
+}
+
+/* Nuolipainikkeet */
+.gallery-nav-btn {
+    position: absolute; /* Päälle gallerian */
+    top: 50%; /* Keskelle pystyyn */
+    transform: translateY(-50%); /* Täsmäys keskelle */
+    z-index: 20; /* Päällä */
+    width: 60px; /* Koko */
+    height: 60px; /* Koko */
+    border-radius: 50%; /* Pyöreä */
+    border: 2px solid var(--gold-accent); /* Reunus */
+    background: rgba(250, 246, 240, 0.95); /* Tausta */
+    color: var(--gold-accent); /* Ikonin väri */
+    cursor: pointer; /* Osoitin */
+    display: flex; /* Keskitys */
+    align-items: center; /* Keskitys */
+    justify-content: center; /* Keskitys */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+    box-shadow: 0 4px 15px var(--soft-shadow); /* Varjo */
+}
+
+/* Hover-tila nuolissa */
+.gallery-nav-btn:hover {
+    background: var(--terracotta); /* Tausta */
+    border-color: var(--terracotta); /* Reunus */
+    color: white; /* Väri */
+    transform: translateY(-50%) scale(1.1); /* Kevyt zoom */
+}
+
+/* Painallus-tila */
+.gallery-nav-btn:active {
+    transform: translateY(-50%) scale(0.95); /* Kevyt painallus */
+}
+
+/* Vasemman nuolen sijainti */
+.prev-btn {
+    left: 2rem; /* Etäisyys vasemmalta */
+}
+
+/* Oikean nuolen sijainti */
+.next-btn {
+    right: 2rem; /* Etäisyys oikealta */
+}
+
+/* Gallerian rata */
+.gallery-track {
+    position: relative; /* Korttien ankkuri */
+    width: 100%; /* Täysi leveys */
+    height: 500px; /* Korkeus */
+    perspective: 1200px; /* 3D-efekti */
+    transform-style: preserve-3d; /* Säilytä 3D */
+}
+
+/* Yksittäinen kortti */
+.painting-card {
+    position: absolute; /* Paikalla radalla */
+    left: 50%; /* Keskitys */
+    top: 50%; /* Keskitys */
+    width: 320px; /* Kortin leveys */
+    transform-style: preserve-3d; /* 3D-efekti */
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Pehmeä liike */
+    opacity: 0; /* Piilossa oletuksena */
+    pointer-events: none; /* Ei klikkattava */
+    visibility: hidden; /* Ei näy */
+}
+
+/* Näkyvä kortti */
+.painting-card.visible {
+    opacity: 1; /* Näkyy */
+    visibility: visible; /* Näkyy */
+}
+
+/* Kortin kuvakehys */
+.painting-wrapper {
+    position: relative; /* Sisäelementtien ankkuri */
+    width: 100%; /* Täysi leveys */
+    height: 420px; /* Kortin kuvakorkeus */
+    overflow: hidden; /* Piilotetaan ylitys */
+    border-radius: 12px; /* Pyöristys */
+    box-shadow: 
+        0 20px 40px -15px var(--soft-shadow), /* Varjo */
+        0 0 0 1px rgba(184, 149, 110, 0.2); /* Ohut kehys */
+    transition: box-shadow 0.3s ease; /* Pehmeä muutos */
+}
+
+/* Kortin kuva */
+.painting-wrapper img {
+    width: 100%; /* Täysi leveys */
+    height: 100%; /* Täysi korkeus */
+    object-fit: cover; /* Kuva täyttää */
+    transition: transform 0.5s ease; /* Pehmeä zoom */
+}
+
+/* Hover-zoom kortille */
+.painting-card:hover .painting-wrapper img {
+    transform: scale(1.08); /* Suurennus */
+}
+
+/* Kortin tekstialue */
+.painting-info {
+    padding: 1.5rem 0.5rem; /* Sisätila */
+    text-align: center; /* Keskitys */
+    opacity: 0.8; /* Hieman läpinäkyvä */
+    transition: opacity 0.3s ease; /* Pehmeä muutos */
+}
+
+/* Kortin otsikko */
+.painting-info h3 {
+    font-family: 'Playfair Display', serif; /* Otsikkofontti */
+    font-size: 1.3rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+    margin-bottom: 0.3rem; /* Väli */
+}
+
+/* Kortin tekstit */
+.painting-info p {
+    font-size: 0.9rem; /* Koko */
+    color: var(--text-light); /* Väri */
+}
+
+/* Hintateksti */
+.painting-price {
+    font-size: 1.1rem !important; /* Koko */
+    color: var(--terracotta) !important; /* Väri */
+    font-weight: 400; /* Paino */
+    margin-top: 0.3rem; /* Väli */
+}
+
+/* Saatavuus */
+.painting-status {
+    font-size: 0.8rem !important; /* Koko */
+    opacity: 0.7; /* Hieman läpinäkyvä */
+}
+
+/* Gallerian vinkkiteksti */
+.gallery-hint {
+    text-align: center; /* Keskitys */
+    font-size: 0.9rem; /* Koko */
+    color: var(--text-light); /* Väri */
+    opacity: 0.8; /* Hieman läpinäkyvä */
+    margin-top: 1rem; /* Väli */
+}
+
+/* Myyty-merkki */
+.sold-badge {
+    position: absolute; /* Kulmaan */
+    top: 1rem; /* Ylös */
+    right: 1rem; /* Oikealle */
+    background: rgba(198, 125, 94, 0.95); /* Taustaväri */
+    color: white; /* Tekstin väri */
+    padding: 0.4rem 0.8rem; /* Sisätila */
+    border-radius: 4px; /* Pyöristys */
+    font-size: 0.75rem; /* Koko */
+    font-weight: 600; /* Paino */
+    letter-spacing: 1px; /* Kirjainväli */
+    text-transform: uppercase; /* Isot kirjaimet */
+}
+
+/* Keskellä oleva kortti */
+.painting-card.center {
+    transform: translate(-50%, -50%) translateZ(100px) scale(1); /* Keskitys ja syvyys */
+    z-index: 10; /* Päällä */
+    pointer-events: auto; /* Klikattava */
+    opacity: 1; /* Näkyy */
+    visibility: visible; /* Näkyy */
+}
+
+/* Keskikortin kehyskorostus */
+.painting-card.center .painting-wrapper {
+    box-shadow: 
+        0 30px 60px -15px rgba(92, 64, 51, 0.3), /* Syvempi varjo */
+        0 0 0 2px var(--gold-accent); /* Korostusreuna */
+}
+
+/* Keskikortin teksti */
+.painting-card.center .painting-info {
+    opacity: 1; /* Täysin näkyvä */
+}
+
+/* Vasemmanpuoleinen kortti */
+.painting-card.side-left {
+    transform: translate(-50%, -50%) translateX(-380px) translateZ(-50px) rotateY(25deg) scale(0.85); /* Siirto vasemmalle */
+    z-index: 5; /* Tason järjestys */
+    pointer-events: auto; /* Klikattava */
+    opacity: 0.7; /* Hieman haalea */
+    visibility: visible; /* Näkyy */
+}
+
+/* Oikeanpuoleinen kortti */
+.painting-card.side-right {
+    transform: translate(-50%, -50%) translateX(380px) translateZ(-50px) rotateY(-25deg) scale(0.85); /* Siirto oikealle */
+    z-index: 5; /* Tason järjestys */
+    pointer-events: auto; /* Klikattava */
+    opacity: 0.7; /* Hieman haalea */
+    visibility: visible; /* Näkyy */
+}
+
+/* Kauempi vasen kortti */
+.painting-card.far-left {
+    transform: translate(-50%, -50%) translateX(-650px) translateZ(-150px) rotateY(35deg) scale(0.65); /* Kauemmas */
+    z-index: 2; /* Alempi taso */
+    pointer-events: auto; /* Klikattava */
+    opacity: 0.4; /* Haalea */
+    visibility: visible; /* Näkyy */
+}
+
+/* Kauempi oikea kortti */
+.painting-card.far-right {
+    transform: translate(-50%, -50%) translateX(650px) translateZ(-150px) rotateY(-35deg) scale(0.65); /* Kauemmas */
+    z-index: 2; /* Alempi taso */
+    pointer-events: auto; /* Klikattava */
+    opacity: 0.4; /* Haalea */
+    visibility: visible; /* Näkyy */
+}
+
+/* Piilotettu kortti */
+.painting-card.hidden {
+    transform: translate(-50%, -50%) translateZ(-200px) scale(0.4); /* Kauas taakse */
+    opacity: 0; /* Piilossa */
+    visibility: hidden; /* Ei näy */
+}
+
+/* Modal-ikkuna taustalle */
+.painting-modal {
+    position: fixed; /* Pysyy paikallaan */
+    top: 0; /* Ylös */
+    left: 0; /* Vasemmalle */
+    width: 100%; /* Täysi leveys */
+    height: 100%; /* Täysi korkeus */
+    background: rgba(0, 0, 0, 0); /* Läpinäkyvä */
+    z-index: 1000; /* Päällä */
+    display: flex; /* Keskitys */
+    align-items: center; /* Pysty */
+    justify-content: center; /* Vaaka */
+    pointer-events: none; /* Ei klikkauksia */
+    transition: background 0.4s ease; /* Pehmeä tummennus */
+}
+
+/* Modal aktiivisena */
+.painting-modal.active {
+    background: rgba(0, 0, 0, 0.9); /* Tumma tausta */
+    pointer-events: auto; /* Sallitaan klikkaukset */
+}
+
+/* Sulkunappi */
+.modal-close {
+    position: absolute; /* Yläkulmaan */
+    top: 2rem; /* Etäisyys ylhäältä */
+    right: 2rem; /* Etäisyys oikealta */
+    width: 50px; /* Koko */
+    height: 50px; /* Koko */
+    border-radius: 50%; /* Pyöreä */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Vaalea reunus */
+    background: transparent; /* Läpinäkyvä */
+    color: white; /* Ikonin väri */
+    cursor: pointer; /* Osoitin */
+    display: flex; /* Keskitys */
+    align-items: center; /* Keskitys */
+    justify-content: center; /* Keskitys */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+    z-index: 1001; /* Päällä */
+    opacity: 0; /* Piilossa oletuksena */
+    pointer-events: none; /* Ei klikkauksia */
+}
+
+/* Sulkunappi näkyväksi */
+.painting-modal.active .modal-close {
+    opacity: 1; /* Näkyy */
+    pointer-events: auto; /* Klikattava */
+}
+
+/* Sulkunapin hover */
+.modal-close:hover {
+    background: var(--terracotta); /* Tausta */
+    border-color: var(--terracotta); /* Reuna */
+    transform: rotate(90deg); /* Pyörähdys */
+}
+
+/* Modaalin sisältö */
+.modal-content {
+    max-width: 90vw; /* Enintään lähes koko leveys */
+    max-height: 90vh; /* Enintään lähes koko korkeus */
+    display: flex; /* Keskitys */
+    flex-direction: column; /* Pysty */
+    align-items: center; /* Keskitys */
+    opacity: 0; /* Piilossa */
+    transform: scale(0.8); /* Pienempi */
+    transition: all 0.4s ease; /* Pehmeä muutos */
+}
+
+/* Modaalin sisältö näkyvänä */
+.painting-modal.active .modal-content {
+    opacity: 1; /* Näkyy */
+    transform: scale(1); /* Normaali koko */
+}
+
+/* Modaalin kuva */
+.modal-content img {
+    max-width: 100%; /* Ei ylitä leveyttä */
+    max-height: 75vh; /* Ei ylitä korkeutta */
+    object-fit: contain; /* Koko kuva näkyy */
+    border-radius: 8px; /* Pyöristys */
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5); /* Varjo */
+}
+
+/* Modaalin tekstialue */
+.modal-info {
+    text-align: center; /* Keskitys */
+    padding: 1.5rem; /* Sisätila */
+    color: white; /* Valkoinen teksti */
+}
+
+/* Modaalin otsikko */
+.modal-info h3 {
+    font-family: 'Playfair Display', serif; /* Otsikkofontti */
+    font-size: 1.8rem; /* Koko */
+    margin-bottom: 0.5rem; /* Väli */
+}
+
+/* Modaalin teksti */
+.modal-info p {
+    font-size: 1rem; /* Koko */
+    opacity: 0.8; /* Hieman läpinäkyvä */
+}
+
+/* Modaalin hinta */
+.modal-price {
+    font-size: 1.3rem !important; /* Koko */
+    color: var(--gold-accent) !important; /* Väri */
+    opacity: 1 !important; /* Täysin näkyvä */
+    margin-top: 0.5rem; /* Väli */
+}
+
+/* Yhteydenotto-osio */
+.contact-section {
+    padding: 6rem 2rem; /* Reunat */
+    background: 
+        radial-gradient(ellipse at 30% 100%, rgba(198, 125, 94, 0.15) 0%, transparent 50%), /* Taustakoriste */
+        radial-gradient(ellipse at 70% 0%, rgba(184, 149, 110, 0.15) 0%, transparent 50%), /* Taustakoriste */
+        linear-gradient(180deg, var(--warm-cream) 0%, var(--warm-beige) 100%); /* Taustaliuku */
+}
+
+/* Yhteystietojen container */
+.contact-container {
+    max-width: 1200px; /* Maksimileveys */
+    margin: 0 auto; /* Keskitys */
+    display: grid; /* Ruudukko */
+    grid-template-columns: 1fr 1fr; /* Kaksi saraketta */
+    gap: 4rem; /* Välit */
+    align-items: start; /* Yläreunasta */
+}
+
+/* Yhteydenoton otsikko */
+.contact-info h2 {
+    font-family: 'Playfair Display', serif; /* Otsikkofontti */
+    font-size: 2.8rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+    margin-bottom: 1.5rem; /* Väli */
+}
+
+/* Johdantoteksti */
+.contact-intro {
+    font-size: 1.1rem; /* Koko */
+    line-height: 1.8; /* Riviväli */
+    color: var(--text-light); /* Väri */
+    margin-bottom: 2rem; /* Väli */
+}
+
+/* Yhteystietojen lista */
+.contact-details {
+    display: flex; /* Pystyrivi */
+    flex-direction: column; /* Pysty */
+    gap: 1rem; /* Välit */
+}
+
+/* Yksittäinen rivi */
+.contact-item {
+    display: flex; /* Pysty */
+    flex-direction: column; /* Pysty */
+    gap: 0.3rem; /* Välit */
+}
+
+/* Yhteystietojen otsikot */
+.contact-label {
+    font-size: 0.85rem; /* Pieni teksti */
+    color: var(--terracotta); /* Korostusväri */
+    text-transform: uppercase; /* Isot kirjaimet */
+    letter-spacing: 1px; /* Kirjainväli */
+}
+
+/* Yhteystietojen arvot */
+.contact-value {
+    font-size: 1.1rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+}
+
+/* Lomakkeen laatikko */
+.contact-form-wrapper {
+    background: rgba(255, 255, 255, 0.7); /* Läpinäkyvä tausta */
+    padding: 2.5rem; /* Sisätila */
+    border-radius: 16px; /* Pyöristys */
+    box-shadow: 0 10px 40px var(--soft-shadow); /* Varjo */
+    border: 1px solid rgba(184, 149, 110, 0.2); /* Ohut reunus */
+}
+
+/* Lomakeasettelu */
+.contact-form {
+    display: flex; /* Pysty */
+    flex-direction: column; /* Pysty */
+    gap: 1.5rem; /* Välit */
+}
+
+/* Lomakekenttäryhmä */
+.form-group {
+    display: flex; /* Pysty */
+    flex-direction: column; /* Pysty */
+    gap: 0.5rem; /* Välit */
+}
+
+/* Lomakkeen label */
+.form-group label {
+    font-size: 0.9rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+    font-weight: 400; /* Peruspaino */
+    letter-spacing: 0.5px; /* Kirjainväli */
+}
+
+/* Lomakkeen syötteet */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 1rem 1.2rem; /* Sisätila */
+    border: 1px solid rgba(184, 149, 110, 0.3); /* Reunus */
+    border-radius: 8px; /* Pyöristys */
+    font-family: 'Lato', sans-serif; /* Fontti */
+    font-size: 1rem; /* Koko */
+    color: var(--text-dark); /* Väri */
+    background: rgba(255, 255, 255, 0.8); /* Tausta */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+}
+
+/* Focus-tila */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none; /* Ei oletusreunaa */
+    border-color: var(--terracotta); /* Reunus */
+    box-shadow: 0 0 0 3px rgba(198, 125, 94, 0.15); /* Hehku */
+}
+
+/* Placeholder-tekstit */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-light); /* Vaalea väri */
+    opacity: 0.7; /* Hieman läpinäkyvä */
+}
+
+/* Valintalista */
+.form-group select {
+    cursor: pointer; /* Osoitin */
+    appearance: none; /* Poistetaan oletusnuoli */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b7355' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); /* Oma nuoli */
+    background-repeat: no-repeat; /* Ei toistoa */
+    background-position: right 1rem center; /* Nuolen sijainti */
+    padding-right: 2.5rem; /* Tilaa nuolelle */
+}
+
+/* Tekstialue */
+.form-group textarea {
+    resize: vertical; /* Vain pystysuuntainen koko */
+    min-height: 120px; /* Minimikorkeus */
+}
+
+/* Captcha-ryhmä */
+.captcha-group {
+    margin-top: 0.5rem; /* Pieni väli */
+}
+
+/* Captchan riviasettelu */
+.captcha-wrapper {
+    display: flex; /* Rivi */
+    align-items: center; /* Keskitys */
+    gap: 1rem; /* Välit */
+    flex-wrap: wrap; /* Rivitys */
+}
+
+/* Captcha-kysymys */
+.captcha-question {
+    font-size: 1rem; /* Koko */
+    color: var(--terracotta); /* Korostusväri */
+    font-weight: 500; /* Puolilihava */
+    background: rgba(198, 125, 94, 0.1); /* Tausta */
+    padding: 0.75rem 1rem; /* Sisätila */
+    border-radius: 8px; /* Pyöristys */
+    white-space: nowrap; /* Ei rivitystä */
+}
+
+/* Captcha-syöte */
+.captcha-wrapper input {
+    width: 120px; /* Leveys */
+    flex-shrink: 0; /* Ei kutistu */
+}
+
+/* Lähetyspainike */
+.submit-btn {
+    display: flex; /* Rivi */
+    align-items: center; /* Keskitys */
+    justify-content: center; /* Keskitys */
+    gap: 0.75rem; /* Välit */
+    padding: 1rem 2rem; /* Sisätila */
+    background: linear-gradient(135deg, var(--terracotta) 0%, var(--gold-accent) 100%); /* Taustaliuku */
+    color: white; /* Teksti */
+    border: none; /* Ei reunaa */
+    border-radius: 30px; /* Pyöreä */
+    font-family: 'Lato', sans-serif; /* Fontti */
+    font-size: 1rem; /* Koko */
+    font-weight: 400; /* Paino */
+    letter-spacing: 1px; /* Kirjainväli */
+    cursor: pointer; /* Osoitin */
+    transition: all 0.3s ease; /* Pehmeä muutos */
+    margin-top: 0.5rem; /* Väli */
+}
+
+/* Hover-tila */
+.submit-btn:hover {
+    transform: translateY(-2px); /* Nousee hieman */
+    box-shadow: 0 8px 25px rgba(198, 125, 94, 0.35); /* Varjo */
+}
+
+/* Painallus-tila */
+.submit-btn:active {
+    transform: translateY(0); /* Takaisin */
+}
+
+/* Painikkeen ikoni */
+.submit-btn svg {
+    transition: transform 0.3s ease; /* Pehmeä liike */
+}
+
+/* Ikonin liike hoverissa */
+.submit-btn:hover svg {
+    transform: translateX(4px); /* Liukuu oikealle */
+}
+
+/* Alatunniste */
+.footer {
+    background: linear-gradient(180deg, var(--warm-cream) 0%, var(--warm-beige) 100%); /* Tausta */
+    padding: 3rem 2rem; /* Sisätila */
+    border-top: 1px solid rgba(184, 149, 110, 0.2); /* Yläreuna */
+}
+
+/* Alatunnisteen sisältö */
+.footer-content {
+    max-width: 1200px; /* Maksimileveys */
+    margin: 0 auto; /* Keskitys */
+    display: flex; /* Rivi */
+    justify-content: center; /* Keskitys */
+    align-items: center; /* Keskitys */
+    flex-wrap: wrap; /* Rivitys */
+    gap: 2rem; /* Välit */
+}
+
+/* Tekijänoikeus */
+.copyright {
+    font-size: 0.9rem; /* Koko */
+    color: var(--text-light); /* Väri */
+}
+
+/* Footer-linkkien rivi */
+.footer-links {
+    display: flex; /* Rivi */
+    gap: 2rem; /* Välit */
+}
+
+/* Footer-linkit */
+.footer-links a {
+    color: var(--text-light); /* Väri */
+    text-decoration: none; /* Ei alleviivausta */
+    font-size: 0.9rem; /* Koko */
+    transition: color 0.3s ease; /* Pehmeä väri */
+}
+
+/* Footer-link hover */
+.footer-links a:hover {
+    color: var(--terracotta); /* Korostus */
+}
+
+/* Responsiivisuus tabletilla */
+@media (max-width: 1024px) {
+    .hero-content {
+        flex-direction: column; /* Kuva ja teksti päällekkäin */
+        gap: 3rem; /* Välit */
+        text-align: center; /* Keskitys */
+    }
+
+    .artist-photo {
+        width: 300px; /* Pienempi kuva */
+        height: 400px; /* Pienempi kuva */
+    }
+
+    .artist-name {
+        font-size: 2.5rem; /* Pienempi otsikko */
+    }
+
+    .painting-card {
+        width: 280px; /* Pienempi kortti */
+    }
+
+    .painting-wrapper {
+        height: 360px; /* Pienempi korkeus */
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr; /* Yksi sarake */
+        gap: 3rem; /* Välit */
+    }
+
+    .contact-info {
+        text-align: center; /* Keskitys */
+    }
+
+    .contact-details {
+        align-items: center; /* Keskitys */
+    }
+
+    .gallery-nav-btn {
+        width: 50px; /* Pienemmät napit */
+        height: 50px; /* Pienemmät napit */
+    }
+
+    .prev-btn {
+        left: 1rem; /* Lähemmäs */
+    }
+
+    .next-btn {
+        right: 1rem; /* Lähemmäs */
+    }
+
+    .gallery-container {
+        min-height: 480px; /* Pienempi korkeus */
+    }
+
+    .painting-card.side-left {
+        transform: translate(-50%, -50%) translateX(-300px) translateZ(-50px) rotateY(25deg) scale(0.8); /* Sovitus */
+    }
+
+    .painting-card.side-right {
+        transform: translate(-50%, -50%) translateX(300px) translateZ(-50px) rotateY(-25deg) scale(0.8); /* Sovitus */
+    }
+
+    .painting-card.far-left {
+        transform: translate(-50%, -50%) translateX(-500px) translateZ(-150px) rotateY(35deg) scale(0.6); /* Sovitus */
+    }
+
+    .painting-card.far-right {
+        transform: translate(-50%, -50%) translateX(500px) translateZ(-150px) rotateY(-35deg) scale(0.6); /* Sovitus */
+    }
+}
+
+/* Responsiivisuus mobiilissa */
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1rem; /* Pienemmät reunat */
+    }
+
+    .artist-photo {
+        width: 250px; /* Pienempi kuva */
+        height: 330px; /* Pienempi kuva */
+    }
+
+    .artist-name {
+        font-size: 2rem; /* Pienempi otsikko */
+    }
+
+    .artist-bio {
+        font-size: 1rem; /* Pienempi teksti */
+    }
+
+    .social-links {
+        flex-direction: row; /* Linkit vierekkäin */
+        justify-content: center; /* Keskitys */
+        flex-wrap: wrap; /* Sallitaan rivittyminen */
+        gap: 0.75rem; /* Pienempi väli */
+    }
+
+    .scroll-indicator {
+        position: static; /* Irrotetaan absoluuttisesta */
+        margin-top: 1.5rem; /* Väli linkkeihin */
+    }
+
+    .gallery-header h2 {
+        font-size: 2rem; /* Pienempi otsikko */
+    }
+
+    .painting-card {
+        width: 220px; /* Pienempi kortti */
+    }
+
+    .painting-wrapper {
+        height: 290px; /* Pienempi korkeus */
+    }
+
+    .gallery-nav-btn {
+        width: 44px; /* Pienemmät napit */
+        height: 44px; /* Pienemmät napit */
+    }
+
+    .prev-btn {
+        left: 0.5rem; /* Lähemmäs */
+    }
+
+    .next-btn {
+        right: 0.5rem; /* Lähemmäs */
+    }
+
+    .footer-content {
+        flex-direction: column; /* Pystyyn */
+        gap: 1rem; /* Välit */
+        text-align: center; /* Keskitys */
+    }
+    
+    .credits {
+        order: 3; /* Sijoitus listassa */
+    }
+
+    .contact-section {
+        padding: 4rem 1rem; /* Pienemmät reunat */
+    }
+
+    .contact-info h2 {
+        font-size: 2rem; /* Pienempi otsikko */
+    }
+
+    .contact-form-wrapper {
+        padding: 1.5rem; /* Pienempi sisätila */
+    }
+
+    .gallery-container {
+        min-height: 420px; /* Pienempi korkeus */
+    }
+
+    .painting-card.side-left {
+        transform: translate(-50%, -50%) translateX(-220px) translateZ(-50px) rotateY(20deg) scale(0.75); /* Sovitus */
+    }
+
+    .painting-card.side-right {
+        transform: translate(-50%, -50%) translateX(220px) translateZ(-50px) rotateY(-20deg) scale(0.75); /* Sovitus */
+    }
+
+    .painting-card.far-left {
+        transform: translate(-50%, -50%) translateX(-350px) translateZ(-150px) rotateY(30deg) scale(0.55); /* Sovitus */
+    }
+
+    .painting-card.far-right {
+        transform: translate(-50%, -50%) translateX(350px) translateZ(-150px) rotateY(-30deg) scale(0.55); /* Sovitus */
+    }
+
+    .modal-close {
+        top: 1rem; /* Lähemmäs yläreunaa */
+        right: 1rem; /* Lähemmäs oikeaa */
+        width: 40px; /* Pienempi nappi */
+        height: 40px; /* Pienempi nappi */
+    }
+
+    .modal-info h3 {
+        font-size: 1.4rem; /* Pienempi otsikko */
+    }
+}
+
+/* Tekijämerkintä */
+.credits {
+    font-size: 0.8rem; /* Pieni teksti */
+    color: var(--text-light); /* Vaalea väri */
+}
+
+/* Sateenkaari-teksti */
+.rainbow-text {
+    font-weight: 500; /* Puolilihava */
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff, #ff0000); /* Väriliuku */
+    background-size: 200% auto; /* Laajempi liuku */
+    -webkit-background-clip: text; /* Vain teksti näkyy */
+    background-clip: text; /* Vain teksti näkyy */
+    -webkit-text-fill-color: transparent; /* Tekstin väri läpinäkyväksi */
+    animation: rainbow-wave 3s linear infinite; /* Animaatio */
+}
+
+/* Sydän-ikoni */
+.heart {
+    color: #ff0000; /* Punainen */
+    font-size: 0.9rem; /* Koko */
+}
+
+/* Sateenkaari-animaatio */
+@keyframes rainbow-wave {
+    0% {
+        background-position: 0% center; /* Alku */
+    }
+    100% {
+        background-position: 200% center; /* Loppu */
+    }
+}
